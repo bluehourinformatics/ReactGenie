@@ -6,6 +6,15 @@ export default function Home() {
     <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
       <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
         <Button>Sabbir</Button>
+        <div className="flex items-center justify-center p-4 border border-border rounded">
+          <Image
+            src={"/logo.png"}
+            alt=""
+            width={24}
+            height={24}
+            className="object-fit"
+          />
+        </div>
       </main>
     </div>
   );
