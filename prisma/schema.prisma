@@ -49,9 +49,10 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  projects    Project[]
-  billingPlan BillingPlan?
-  usage       UsageRecord[]
+  projects     Project[]
+  billingPlan  BillingPlan?
+  usage        UsageRecord[]
+  chatSessions ChatSession[]
 }
 
 model Project {
@@ -68,7 +69,8 @@ model Project {
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
 
-  aiSessions AIBuilderSession[]
+  aiSessions   AIBuilderSession[]
+  chatSessions ChatSession[]
 }
 
 model Template {
@@ -110,14 +112,40 @@ model BillingPlan {
 }
 
 model UsageRecord {
-  id          String    @id @default(uuid())
-  user        User      @relation(fields: [userId], references: [id])
-  userId      String
-  type        UsageType
-  tokensUsed  Int       @default(0)
-  projects    Int       @default(0)
-  storageMB   Int       @default(0)
-  periodStart DateTime
-  periodEnd   DateTime
-  createdAt   DateTime  @default(now())
+  id            String       @id @default(uuid())
+  user          User         @relation(fields: [userId], references: [id])
+  userId        String
+  type          UsageType
+  tokensUsed    Int          @default(0)
+  projects      Int          @default(0)
+  storageMB     Int          @default(0)
+  periodStart   DateTime
+  periodEnd     DateTime
+  createdAt     DateTime     @default(now())
+  chatSession   ChatSession? @relation(fields: [chatSessionId], references: [id])
+  chatSessionId String?
+}
+
+model ChatSession {
+  id        String   @id @default(uuid())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  project   Project? @relation(fields: [projectId], references: [id])
+  projectId String?
+  model     String // e.g. "openai/gpt-4o"
+  title     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  messages ChatMessage[]
+  usage    UsageRecord[]
+}
+
+model ChatMessage {
+  id        String      @id @default(uuid())
+  session   ChatSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  sessionId String
+  role      String // "system" | "user" | "assistant"
+  content   String
+  createdAt DateTime    @default(now())
 }
