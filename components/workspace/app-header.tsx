@@ -11,8 +11,20 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "../ui/button";
+import { Show, SignInButton, SignUpButton, UserButton } from "@clerk/nextjs";
+import { useState, useEffect } from "react";
 
 export default function AppHeader() {
+  const [mounted, setMounted] = useState(false);
+  // Ensure the component is mounted before rendering
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return null;
+  }
+
   return (
     <header className="flex items-center justify-between h-16 border-b border-border bg-card px-6">
       {/* Search */}
@@ -43,7 +55,18 @@ export default function AppHeader() {
         </Button>
 
         {/* Profile */}
-        <DropdownMenu>
+        <Show when="signed-out">
+          <SignInButton />
+          <SignUpButton>
+            <button className="bg-[#6c47ff] text-white rounded-full font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 cursor-pointer">
+              Sign Up
+            </button>
+          </SignUpButton>
+        </Show>
+        <Show when="signed-in">
+          <UserButton />
+        </Show>
+        {/* <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="relative h-9 w-9 rounded-full">
               <Avatar className="h-9 w-9">
@@ -72,7 +95,7 @@ export default function AppHeader() {
               Log out
             </DropdownMenuItem>
           </DropdownMenuContent>
-        </DropdownMenu>
+        </DropdownMenu> */}
       </div>
     </header>
   );

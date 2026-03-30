@@ -1,21 +1,25 @@
-import { Button } from "@/components/ui/button";
-import Image from "next/image";
+import { CtaSection } from "@/components/landing/cta-section";
+import FeaturesSection from "@/components/landing/features-section";
+import HeroSection from "@/components/landing/hero-section";
+import { LandingFooter } from "@/components/landing/landing-footer";
+import LandingHeader from "@/components/landing/landing-header";
+import LogoCloud from "@/components/landing/logo-cloud";
+import { PricingSection } from "@/components/landing/pricing-section";
+import { ShowcaseSection } from "@/components/landing/showcase-section";
 
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Button>Sabbir</Button>
-        <div className="flex items-center justify-center p-4 border border-border rounded">
-          <Image
-            src={"/logo.png"}
-            alt=""
-            width={24}
-            height={24}
-            className="object-fit"
-          />
-        </div>
+    <div className="min-h-screen bg-background space-y-4">
+      <LandingHeader />
+      <main>
+        <HeroSection />
+        <LogoCloud />
+        <FeaturesSection />
+        <ShowcaseSection />
+        <PricingSection />
+        <CtaSection />
       </main>
+      <LandingFooter />
     </div>
   );
 }
